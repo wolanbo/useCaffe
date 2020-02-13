@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+/data/learn/caffe/caffe-master/build/examples/cpp_classification/classification.bin /data/lanhaibo/caffe_test/MiniNet_Test.protxt /data/lanhaibo/caffe_test/MiniNet_iter_20000.caffemodel /data/lanhaibo/caffe_test/train_data_means.binaryproto /data/lanhaibo/caffe_test/labels.txt /data/lanhaibo/caffe_test/trian_data_dir/10199_237172274879_10002024.bmp

@@ -1,0 +1,4 @@
+/home/lan/Desktop/use-caffe/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/lan/Desktop/use-caffe/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/lan/Desktop/use-caffe/cmake-build-debug/CMakeFiles/classifier.dir
+/home/lan/Desktop/use-caffe/cmake-build-debug/CMakeFiles/run.dir

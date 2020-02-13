@@ -1,0 +1,168 @@
+<span style="font-size:18px;">name: "MiniNet"
+layer {
+  name: "MiniNet"    // name制定层的名称，不能有重复
+  type: "Data"   // type指定层的类型
+  top: "data"
+  top: "label"
+  include {                //include用于指定是训练阶段还是测试阶段
+    phase: TRAIN   //  训练阶段
+  }
+  transform_param {         //数据装换参数:
+    scale: 0.00390625   //对所有的图片归一化到0~1之间，也就是对输入数据全部乘以scale，0.0039= 1/256    //缩放
+  }
+  data_param {
+    source: "/data/lanhaibo/caffe_tiao_yan_shi_bie/img_train_lmdb"  //lmdb数据来源
+    batch_size: 64    //批处理尺寸，每次训练采用的图片64张，min-batch
+    backend: LMDB    //数据源格式
+  }
+}
+layer {
+  name: "MiniNet"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST      //测试阶段
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "/data/lanhaibo/caffe_tiao_yan_shi_bie/img_train_lmdb" //测试数据图片路径
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"   //卷积神经网络的第一层，卷积层
+  type: "Convolution"  //这层操作为卷积
+  bottom: "data"   //这一层的前一层是data层
+  top: "conv1"   //
+  param {
+    lr_mult: 1    //第一个表示权值学习率
+  }
+  param {
+    lr_mult: 2    //偏置项学习率
+  }
+  convolution_param {
+    num_output: 20    //定义输出特征图个数
+    kernel_size: 5    //定义卷积核(过滤器)大小
+    stride: 1         //指定滑动步长S
+    weight_filler {   //权值初始化为xavier
+      type: "xavier"
+    }
+    bias_filler {     //初始化偏置项为常数0
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"      //池化层，这一层的操作为池化
+  bottom: "conv1"     //这一层的前面一层名字为：conv1
+  top: "pool1"
+  pooling_param {
+    pool: MAX        //采用最大值池化
+    kernel_size: 2   
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"          //全连接层
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"   //激活层
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 6
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy"    //输出分类精确度
+  type: "Accuracy"
+  bottom: "ip2"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"          //Loss层，输出残差
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}</span>

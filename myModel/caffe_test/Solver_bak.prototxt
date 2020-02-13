@@ -1,0 +1,15 @@
+net: "/data/lanhaibo/caffe_tiao_yan_shi_bie/MiniNet.prototxt"  //指定网络结构文件
+test_iter: 100               //验证迭代次数
+test_interval: 500        //验证间隔
+base_lr: 0.01            //基础学习率
+momentum: 0.9              //动量
+type: SGD                  //solver优化方法
+weight_decay: 0.0005       //权值衰减系数
+lr_policy: "inv"         // 学习率变化规则
+gamma: 0.0001              //学习率变化系数
+power: 0.75              //学习率变化系数
+display: 100              //屏幕显示间隔
+max_iter: 20000             //最大迭代次数
+snapshot: 500  	           //快照，即Model保存间隔
+snapshot_prefix: "/data/lanhaibo/caffe_tiao_yan_shi_bie/MiniNet"   //Model名字前缀
+solver_mode: GPU         //硬件配置

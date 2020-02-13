@@ -1,0 +1,1 @@
+/data/learn/caffe/caffe-master/build/tools/compute_image_mean /data/lanhaibo/caffe_test/img_train_lmdb /data/lanhaibo/caffe_test/train_data_means.binaryproto

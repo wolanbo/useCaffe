@@ -1,0 +1,1 @@
+/data/learn/caffe/caffe-master/build/tools/caffe train -solver=/data/lanhaibo/caffe_test/Solver.prototxt 
